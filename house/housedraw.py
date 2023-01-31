@@ -3,15 +3,15 @@
 import turtle
 
 
-def draw_line(x1, y1, x2, y2):
+def draw_line(x1, y1, x2, y2, t=turtle):
     """
         Draws a line.
         :params: coordinates for the two ends of the line.
     """
-    turtle.up()
-    turtle.setpos(x1, y1)
-    turtle.down()
-    turtle.setpos(x2, y2)
+    t.up()
+    t.setpos(x1, y1)
+    t.down()
+    t.setpos(x2, y2)
 
 
 def draw_rec(x1, y1, x2, y2, color='black', fill=True):
@@ -54,7 +54,7 @@ def draw_tri(x1, y1, x2, y2, x3, color='black', fill=True):
         turtle.end_fill()
 
 
-def draw_circle(x, y, radius=50, color='black', fill=True):
+def draw_circle(x, y, radius=50, color='black', fill=True, t=turtle):
     """
         Draws a circle.
         x: x coord of center
@@ -62,15 +62,15 @@ def draw_circle(x, y, radius=50, color='black', fill=True):
         radius: radius
         color: fill color
     """
-    turtle.up()
-    turtle.setpos(x, y)
-    turtle.color(color)
-    turtle.down()
+    t.up()
+    t.setpos(x, y)
+    t.color(color)
+    t.down()
     if fill:
-        turtle.begin_fill()
-    turtle.circle(radius)
+        t.begin_fill()
+    t.circle(radius)
     if fill:
-        turtle.end_fill()
+        t.end_fill()
 
 
 def draw_window(x, y, color='blue', fill=True):
