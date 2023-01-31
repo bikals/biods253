@@ -132,8 +132,8 @@ def draw_cloud(x,y):
     draw_circle(x - 0.5*d, y, color = 'grey')
     draw_circle(x, y, color = 'grey')
     draw_circle(x + 0.5*d, y, color = 'grey')
-    draw_circle(x - 0.25*d, y + 35, color = 'grey')
-    draw_circle(x + 0.25*d, y + 35, color = 'grey')
+    draw_circle(x - 0.25*d, y + 0.35*d, color = 'grey')
+    draw_circle(x + 0.25*d, y + 0.35*d, color = 'grey')
 
 
 def draw_house(x, y):
