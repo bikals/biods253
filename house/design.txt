@@ -13,11 +13,92 @@ Non-Goals include:
 
 
 3. Design
+
+Phase I
+
 We plan to organize the house symmetrically and write 2 core functions to draw lines and circles.
 After testing, proceed to write functions that create shapes from lines and circles such as triangles,
 rectangles, clouds, treetops. Finally, make compound structures such as windows and garage doors. Then,
 write a function to make a house. Upload code and ensure dependencies are managed and readme file is
 easy to read and understand.
+
+Phase II
+
+We will need to support the following additional modes:
+1. making a house 10% smaller, and drawing multiple houses.
+2. toggling clouds
+3. simulating cracks in windows
+4. "tilting" one house by an incline.
+5. cleaning up code
+
+For Phase I, the code was structured with basic draw functions (circle, rectangle, etc), which are called
+from higher level functions.  An example follows
+
+                def draw_line(x1, y1, x2, y2, t=turtle):
+                ....
+
+                def draw_rec(x1, y1, x2, y2, color='black', fill=True):
+                    turtle.color(color)
+                    if fill:
+                        turtle.begin_fill()
+                    draw_line(x1, y1, x1, y2)
+
+
+In order to toggle clouds (2) , and simulate cracks (3) in the windows, we can pass additional default parameters:
+                def draw_window(x, y, color='blue', fill=True)
+
+can become:
+                def draw_window(x, y, color='blue', fill=True, cracked=False):
+
+Additionally, clouds can be toggled by adding a parameter to the house:
+                def draw_house(x, y, show_clouds=True):
+
+
+The code is structured so that all drawing functions take one or more x,y coordinates which are used
+to position the turtle and draw.  Since our objective is to alter as little of the code as possible,
+the easiest way to approach this is to use the conecpt of an "affine transform". 
+From Wikipedia: "In Euclidean geometry, an affine transformation or affinity 
+is a geometric transformation that preserves lines and parallelism, but not necessarily 
+Euclidean distances and angles."
+
+Using the affine library(https://pypi.org/project/affine/) will make this much easier.
+
+The least disruptive way to modify the existing code to meet our needs is to preseve the coordinates 
+currently set out, but enable the lowest level functions to transforms those coordinates as we require.
+
+For instance, if we wish to simply scale our house down without moving it, we can just apply 
+(newx, newy) = Affine.scale(0.5) * (x,y)
+
+If we wish to rotate coordinates 45 deg *around the origin*, we can
+
+(newx, newy) = Affine.rotate(45) * (x,y)
+
+We will need to add a default parameter to all complex and simple drawing functions 
+that is passed through (affine_matrix).  Changing every invocation to pass this matrix around
+is annoying.
+
+Ideally all the draw functions will be contained in one class, but to reduce changes to the code, we
+will only wrap the internal functions (draw_circle and draw_line) in a class, with a singleton.
+The singleton will have a method to set the affine matrix, which will be used for all operations.
+
+Note that if we scale, calculating radius is a bit complex, and will be done by calculating centroid
+and point on the circle, transforming, then using the distance formula.
+
+The actual mapping needs to be performed in draw_circle and draw_line, the basic functions.
+
+To draw multiple houses beside one another, we can simply use 
+
+affine_matrix =  Affine.translation(HOUSE_WIDTH * i,0)
+draw_house(..., affine_matrix)
+
+For translating and scaling and rotating we can simply multiply Affine operations to one another
+
+
+Based on the code the HOUSE_WIDTH is approximately 9d, and the house height is approx 4.5d where d is a constant set.
+
+
+
+
 
 4. Individual Contributions
 Originally, Bikal completed the outline and design of the trees
@@ -31,3 +112,5 @@ circle and line functions, edited out hard-coded numbers and
 colors, rewrote the design document, created a new dependency
 management file, and corrected Vijay's critisisms
 of the code. Sean worked on the new ReadME file.
+
+Vijay has altered the code for phase II.

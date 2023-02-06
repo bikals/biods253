@@ -9,6 +9,9 @@ import os.path
 import svg_turtle
 import inspect
 
+from affine import Affine
+
+
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPDF, renderPM
 
@@ -42,29 +45,59 @@ class TestShapes(unittest.TestCase):
     def setUp(self):
         # this is run before every test
         self._turtle = svg_turtle.SvgTurtle(*CANVAS_SIZE)
+        self._drawer = housedraw.BasicDrawing(self._turtle)
+        self._turtle.speed(0)
 
     def test_circle(self):
-        housedraw.draw_circle(20, 20, 20, fill = False, t=self._turtle)
+        self._drawer.draw_circle(20, 20, 20, fill = False)
 
         # compare this 20,20,20 turtle against the well-known turtle png
         self.assertIsNone(self._compare_canvas_to_expected(expected_filename='testdata/circle-20.png'))
 
     def test_circle_fail(self):
         # test that a badly sized circle fails to compare as equal
-        housedraw.draw_circle(20, 20, 29, fill = False, t=self._turtle)
+        self._drawer.draw_circle(20, 20, 29, fill = False)
 
         # this should not match, therefore should be not none.
         self.assertIsNotNone(self._compare_canvas_to_expected(expected_filename='testdata/circle-20.png'))
 
     def test_line(self):
-        housedraw.draw_line(20, 20, 20, 60, t=self._turtle)
+        self._drawer.draw_line(20, 20, 20, 60)
 
         # compare this line against a line on the turtle png
         self.assertIsNone(self._compare_canvas_to_expected(expected_filename='testdata/line-20.png'))
 
+
+
+    def test_translated_line(self):
+        self._drawer.set_affine(Affine.translation(-20, -20))
+        self._drawer.draw_line(20, 20, 20, 60)
+        # compare this line against a line on the turtle png
+        self.assertIsNone(self._compare_canvas_to_expected(expected_filename='testdata/test_translated_line.png'))
+
+    def test_rotated_line(self):
+        self._drawer.set_affine(Affine.rotation(45))
+        self._drawer.draw_line(20, 20, 20, 60)
+        # compare this line against a line on the turtle png
+        self.assertIsNone(self._compare_canvas_to_expected(expected_filename='testdata/test_rotated_line.png'))
+
+
+    def test_rotated_scaled_translated_line(self):
+        self._drawer.set_affine(Affine.rotation(45) * Affine.scale(5.0) * Affine.translation(0,-50))
+        self._drawer.draw_line(20, 20, 20, 60)
+        # compare this line against a line on the turtle png
+        self.assertIsNone(self._compare_canvas_to_expected(expected_filename='testdata/test_rotated_scaled_translated_line.png'))
+
+    def test_rotated_scaled_translated_circle(self):
+        self._drawer.set_affine(Affine.rotation(45) * Affine.scale(5.0) * Affine.translation(-50,-50))
+        self._drawer.draw_circle(20,20,20)
+        # compare this line against a line on the turtle png
+        self.assertIsNone(self._compare_canvas_to_expected(expected_filename='testdata/test_rotated_scaled_translated_circle.png'))
+
+
     def test_line_fail(self):
         # test that a badly sized line fails to compare as equal
-        housedraw.draw_line(20, 20, 20, 80, t=self._turtle)
+        self._drawer.draw_line(20, 20, 20, 80)
 
         # this should not match, therefore should be not none.
         self.assertIsNotNone(self._compare_canvas_to_expected(expected_filename='testdata/line-20.png'))
