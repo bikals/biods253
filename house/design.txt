@@ -1,0 +1,33 @@
+1. Background
+This project is for BioDS 253. We are tasked with using
+the turtle graphics library in python to create a house.
+
+2. Goals & Non-Goals
+Our goals include:
+- create a house with at 4 windows, 2 garage doors, one door, 2 trees, and 2 clouds.
+- ensure tests exists for the core functions in the code for this house.
+
+Non-Goals include:
+- Making a program that will spit out a custom house with a user specified number of windows, doors, etc.
+- Writing functions that can be used for different buildings such as a barn or skyscraper.
+
+
+3. Design
+We plan to organize the house symmetrically and write 2 core functions to draw lines and circles.
+After testing, proceed to write functions that create shapes from lines and circles such as triangles,
+rectangles, clouds, treetops. Finally, make compound structures such as windows and garage doors. Then,
+write a function to make a house. Upload code and ensure dependencies are managed and readme file is
+easy to read and understand.
+
+4. Individual Contributions
+Originally, Bikal completed the outline and design of the trees
+and the house, including drawing specific aspects like the
+windows and garage doors. Ryan worked on adding gray
+clouds and tree leaves to the design. Sean added colors
+to the house and trees.
+
+During the project revision, Bikal created tests for the core
+circle and line functions, edited out hard-coded numbers and
+colors, rewrote the design document, created a new dependency
+management file, and corrected Vijay's critisisms
+of the code. Sean worked on the new ReadME file.
